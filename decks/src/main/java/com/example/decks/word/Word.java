@@ -1,9 +1,11 @@
 package com.example.decks.word;
 
 import com.example.decks.deck.Deck;
+import com.example.decks.deckword.DeckWord;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "word")
@@ -19,27 +21,23 @@ public class Word {
             strategy = GenerationType.SEQUENCE,
             generator = "word_sequence"
     )
+    @Column(name = "word_id")
     private Long id;
     private String definition;
     private String transcription;
-    private Boolean learnt;
-    private Date last_checked;
-    private Integer times_checked;
 
-    @ManyToOne
-    @JoinColumn(name="deck_id")
-    private Deck deck;
+
+    @OneToMany(mappedBy = "word", cascade = CascadeType.ALL)
+    private List<DeckWord> deckwords;
 
     public Word(){
 
     }
-    public Word(Long id, String definition, String transcription, Boolean learnt, Date last_checked, Integer times_checked) {
+    public Word(Long id, String definition, String transcription) {
         this.id = id;
         this.definition = definition;
         this.transcription = transcription;
-        this.learnt = learnt;
-        this.last_checked = last_checked;
-        this.times_checked = times_checked;
+
 
     }
 
@@ -67,28 +65,5 @@ public class Word {
         this.transcription = transcription;
     }
 
-    public Boolean getLearnt() {
-        return learnt;
-    }
-
-    public void setLearnt(Boolean learnt) {
-        this.learnt = learnt;
-    }
-
-    public Date getLast_checked() {
-        return last_checked;
-    }
-
-    public void setLast_checked(Date last_checked) {
-        this.last_checked = last_checked;
-    }
-
-    public Integer getTimes_checked() {
-        return times_checked;
-    }
-
-    public void setTimes_checked(Integer times_checked) {
-        this.times_checked = times_checked;
-    }
 
 }

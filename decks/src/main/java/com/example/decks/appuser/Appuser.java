@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
-//comment
+
 @Entity
 @Table
 
@@ -22,6 +22,7 @@ public class Appuser {
             strategy = GenerationType.SEQUENCE,
             generator = "appuser_sequence"
     )
+    @Column(name = "appuser_id")
     private Long id;
     private String name;
     @Transient

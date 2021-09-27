@@ -19,11 +19,12 @@ public class Text {
             strategy = GenerationType.SEQUENCE,
             generator = "text_sequence"
     )
+    @Column(name = "text_id")
     private Long id;
     private String body;
 
     @ManyToOne
-    @JoinColumn(name="appuser_id")
+    @JoinColumn(name="appuser_id", referencedColumnName = "appuser_id")
     private Appuser appuser;
 
     public Text(){}

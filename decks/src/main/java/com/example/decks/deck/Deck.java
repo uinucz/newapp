@@ -1,15 +1,15 @@
 package com.example.decks.deck;
 
 import com.example.decks.appuser.Appuser;
+import com.example.decks.deckword.DeckWord;
 import com.example.decks.word.Word;
 
 import javax.persistence.*;
 import java.awt.print.Book;
 import java.util.List;
-//3rd comment
+
 @Entity
 @Table(name = "deck")
-
 
 public class Deck {
     @Id
@@ -22,14 +22,15 @@ public class Deck {
             strategy = GenerationType.SEQUENCE,
             generator = "deck_sequence"
     )
+    @Column(name = "deck_id")
     private Long id;
     private Boolean learnt;
 
     @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL)
-    private List<Word> words;
+    private List<DeckWord> deckwords;
 
     @ManyToOne
-    @JoinColumn(name="appuser_id")
+    @JoinColumn(name="appuser_id",referencedColumnName="appuser_id")
     private Appuser appuser;
 
     @Override
