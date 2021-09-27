@@ -6,7 +6,7 @@ import com.example.decks.word.Word;
 import javax.persistence.*;
 import java.awt.print.Book;
 import java.util.List;
-//new comment
+//2nd comment
 @Entity
 @Table(name = "deck")
 
