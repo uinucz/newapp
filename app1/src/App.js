@@ -1,51 +1,138 @@
-import TodoList from './TodoList';
-import React, { useState, useRef, useEffect } from 'react';
-const { v4: uuidv4 } = require('uuid');
-const LOCAL_STORAGE_KEY = 'todoapp.todos'
+import React, { useState } from 'react'
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link
+} from "react-router-dom"
+import Card from './Card'
 
-function App() {
-  const [todos, setTodos] = useState([])
-  const todoNameRef = useRef()
+const Home = () => (
+  <div> <h2>TKTL notes app</h2> </div>
+)
 
-  useEffect(() => {
-    const storedTodos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
-    if (storedTodos) {
-      setTodos(storedTodos)
-    }
-  }, [])
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos))
-  }, [todos])
+const Notes = () => (
+  <div> <h2>Notes</h2> </div>
+)
 
-  function toggleTodo(id) {
-    const newTodos = [...todos]
-    const todo = newTodos.find(todo => todo.id === id)
-    todo.complete = !todo.complete
-    setTodos(newTodos)
-  }
+const Users = () => (
+  <div> <h2>Users</h2> </div>
+)
+const AnecdoteList = ({ anecdotes }) => (
+  <div>
+    <h2>Anecdotes</h2>
+    <ul>
+      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+    </ul>
+  </div>
+)
+ 
+const CreateNew = (props) => {
+  const [content, setContent] = useState('')
+  const [author, setAuthor] = useState('')
+  const [info, setInfo] = useState('')
 
-  function handleAddTodo(e) {
-    const name = todoNameRef.current.value
-    if (name == '') return
-    setTodos(prevTodos => {
-      return [...prevTodos, { id: uuidv4(), name: name, complete: false }]
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    props.addNew({
+      content,
+      author,
+      info,
+      votes: 0
     })
-    todoNameRef.current.value = null
   }
 
-  function handleClearTodos() {
-    const newTodos = todos.filter(todo => !todo.complete)
-    setTodos(newTodos)
-  }
   return (
-    <>
-      <TodoList todos={todos} toggleTodo={toggleTodo} />
-      <input ref={todoNameRef} type="text" />
-      <button onClick={handleAddTodo}>Add</button>
-      <button onClick={handleClearTodos}>Clear completed</button>
-      <div>{todos.filter(todo => !todo.complete).length} left to do</div>
-    </>
-  );
+    <div>
+      <h2>create a new anecdote</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          content
+          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+        </div>
+        <div>
+          author
+          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+        </div>
+        <div>
+          url for more info
+          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+        </div>
+        <button>create</button>
+      </form>
+    </div>
+  )
+
+}
+
+const App = () => {
+  const [anecdotes, setAnecdotes] = useState([
+    {
+      content: 'If it hurts, do it more often',
+      author: 'Jez Humble',
+      info: 'https://martinfowler.com/bliki/FrequencyReducesDifficulty.html',
+      votes: 0,
+      id: '1'
+    },
+    {
+      content: 'Premature optimization is the root of all evil',
+      author: 'Donald Knuth',
+      info: 'http://wiki.c2.com/?PrematureOptimization',
+      votes: 0,
+      id: '2'
+    }
+  ])
+
+  const [notification, setNotification] = useState('')
+
+  const addNew = (anecdote) => {
+    anecdote.id = (Math.random() * 10000).toFixed(0)
+    setAnecdotes(anecdotes.concat(anecdote))
+  }
+
+  const anecdoteById = (id) =>
+    anecdotes.find(a => a.id === id)
+
+  const vote = (id) => {
+    const anecdote = anecdoteById(id)
+
+    const voted = {
+      ...anecdote,
+      votes: anecdote.votes + 1
+    }
+
+    setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
+  }
+
+  const padding = {
+    padding: 5
+  }
+
+  return (
+    <div>
+      <h1>Software anecdotes</h1>
+      <Router>
+      <div>
+        <Link style={padding} to="/">Home</Link>
+        <Link style={padding} to="/decks">My Decks</Link>
+        <Link style={padding} to="/users">Log out</Link>
+      </div>
+
+      <Switch>
+        <Route path="/notes">
+          <Notes />
+        </Route>
+        <Route path="/users">
+          <Users />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+
+    </Router>
+
+    </div>
+  )
 }
 
 export default App;
