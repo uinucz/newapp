@@ -24,7 +24,10 @@ public class Deck {
     )
     @Column(name = "deck_id")
     private Long id;
+    @Transient
     private Boolean learnt;
+    private String name;
+
 
     @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL)
     private List<DeckWord> deckwords;
@@ -43,13 +46,20 @@ public class Deck {
 
     public Deck() {}
 
-    public Deck(Boolean learnt) {
-        this.learnt = learnt;
+    public Deck(String name) {
+        this.name = name;
+    }
+    public Deck(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public Deck(Long id, Boolean learnt) {
-        this.id = id;
-        this.learnt = learnt;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -61,7 +71,9 @@ public class Deck {
     }
 
     public Boolean getLearnt() {
-        return learnt;
+        long wordsToShow = this.deckwords.stream().map(i -> i.getShow() == true).count();
+        if(wordsToShow > 0) return true;
+        return false;
     }
 
     public void setLearnt(Boolean learnt) {

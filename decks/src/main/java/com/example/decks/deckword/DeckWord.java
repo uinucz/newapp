@@ -77,7 +77,7 @@ public class DeckWord {
     Deck deck;
 
     @ManyToOne
-    @MapsId("word_id")
+    @MapsId("wordId")
     @JoinColumn(name = "word_id",referencedColumnName="word_id")
     Word word;
 
@@ -137,13 +137,13 @@ public class DeckWord {
     }
 
     public Boolean getShow() {
-//        if (learnt) return false;
-//        else if (this.group == Group.first &&
-//                Period.between(this.last_checked,LocalDate.now()).getDays() > 1) return true;
-//        else if (this.group == Group.second &&
-//                Period.between(this.last_checked,LocalDate.now()).getDays() > 2) return true;
-//        else if (this.group == Group.third &&
-//                Period.between(this.last_checked,LocalDate.now()).getDays() > 7) return true;
+        if (learnt) return false;
+        else if (this.wordGroup == WordGroup.first &&
+                Period.between(this.last_checked,LocalDate.now()).getDays() > 1) return true;
+        else if (this.wordGroup == WordGroup.second &&
+                Period.between(this.last_checked,LocalDate.now()).getDays() > 2) return true;
+        else if (this.wordGroup == WordGroup.third &&
+                Period.between(this.last_checked,LocalDate.now()).getDays() > 7) return true;
         return false;
     }
 
