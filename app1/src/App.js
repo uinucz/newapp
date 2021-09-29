@@ -6,34 +6,40 @@ import {
 } from "react-router-dom"
 import Card from './Card'
 
-
-
-const Home = () => {
-  const [text, setText] = useState('text default')
-  const todoNameRef = useRef()
-
-  const handleTransform = (event) => {
-    event.preventDefault()
-    console.log("forever")
-    // const text = todoNameRef.current.value
-    // if (text === '') return
-    // setText(text)
-    // todoNameRef.current.value = null
-  }
-
-  return (
-    <div>
-      <Form>
-        <Form.Group className="mb-3" onSubmit={handleTransform} >
+function HomeInput(props){
+  return(
+    <>
+      <Form  onSubmit={props.handleTransform} >
+        <Form.Group className="mb-3">
           <Form.Label>Вставьте текст в форму</Form.Label>
-          <Form.Control as="textarea" rows={10} />
+          <Form.Control as="textarea" rows={10}  onChange={props.handleChange}  />
           <Button type="submit">Transform</Button>
         </Form.Group>
       </Form>
-
-      <h3>{text}</h3>
-    </div>
+      <h3>{props.text}</h3>
+    </>
   )
+}
+const HomeTransformed = () => {
+  return(<>HomeTransformed</>)
+}
+function Home(){
+  const [text, setText] = useState(null)
+  const [transformed, setTransformed] = useState(false)
+  const todoNameRef = useRef()
+  const handleTransform = (e) => {
+    e.preventDefault()
+    console.log("handletransform")
+  }
+
+  const handleChange = (event) => {
+    setText(event.target.value)
+  }
+  return <HomeInput props={text, handleChange,  handleTransform}/>
+  // if (transformed) {
+  //   return <HomeInput {copiedText, handleChange, handleTransform}/>
+  // }
+  // return <HomeTransformed />
 }
 
 const Notes = () => (
@@ -73,7 +79,7 @@ const App = () => {
 
       </Router>
     </Container>
-  )
+   )
 }
 
 export default App;
