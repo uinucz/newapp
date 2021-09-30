@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Alert, Popover, OverlayTrigger, Form, Container, Button, Spinner } from "react-bootstrap";
-import axios from 'axios'
 import {
   BrowserRouter as Router,
   Switch, Route, Link
 } from "react-router-dom"
 import Home from './Home'
+import Decks from './Decks'
 
 const pagePadding = {
   padding: 40,
@@ -26,11 +26,11 @@ const App = () => {
         </Container>
 
         <Switch>
-          <Route path="/notes">
-            <Home />
-          </Route>
           <Route path="/users">
             <Home />
+          </Route>
+          <Route path="/decks">
+            <Decks />
           </Route>
           <Route path="/">
             <Home />
