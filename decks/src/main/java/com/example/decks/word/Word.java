@@ -23,8 +23,10 @@ public class Word {
     )
     @Column(name = "word_id")
     private Long id;
+    private String body;
     private String definition;
     private String transcription;
+    private String example;
 
 
     @OneToMany(mappedBy = "word", cascade = CascadeType.ALL)
@@ -33,11 +35,19 @@ public class Word {
     public Word(){
 
     }
-    public Word(Long id, String definition, String transcription) {
-        this.id = id;
+    public Word(String definition, String transcription, String example, String body) {
+        this.body = body;
         this.definition = definition;
         this.transcription = transcription;
+        this.example = example;
 
+    }
+    public Word(Long id, String definition, String transcription, String example, String body) {
+        this.id = id;
+        this.body = body;
+        this.definition = definition;
+        this.transcription = transcription;
+        this.example = example;
 
     }
 
@@ -47,6 +57,14 @@ public class Word {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 
     public String getDefinition() {
@@ -65,5 +83,12 @@ public class Word {
         this.transcription = transcription;
     }
 
+    public String getExample() {
+        return example;
+    }
+
+    public void setExample(String example) {
+        this.example = example;
+    }
 
 }

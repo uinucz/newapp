@@ -10,11 +10,6 @@ import java.time.Period;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-enum WordGroup{
-    first,
-    second,
-    third
-}
 
 @Embeddable
 class DeckWordKey implements Serializable {
@@ -81,11 +76,15 @@ public class DeckWord {
     @JoinColumn(name = "word_id",referencedColumnName="word_id")
     Word word;
 
-    private Boolean learnt;
     private LocalDate last_checked;
+
+    @Enumerated(EnumType.STRING)
     private WordGroup wordGroup;
+
     @Transient
-    private Boolean show;
+    private Boolean statusLearning;
+    @Transient
+    private Boolean statusRepeating;
 
 
     public DeckWordKey getId() {
@@ -112,14 +111,6 @@ public class DeckWord {
         this.word = word;
     }
 
-    public Boolean getLearnt() {
-        return learnt;
-    }
-
-    public void setLearnt(Boolean learnt) {
-        this.learnt = learnt;
-    }
-
     public LocalDate getLast_checked() {
         return last_checked;
     }
@@ -136,36 +127,35 @@ public class DeckWord {
         this.wordGroup = wordGroup;
     }
 
-    public Boolean getShow() {
-        if (learnt) return false;
-        else if (this.wordGroup == WordGroup.first &&
-                Period.between(this.last_checked,LocalDate.now()).getDays() > 1) return true;
-        else if (this.wordGroup == WordGroup.second &&
-                Period.between(this.last_checked,LocalDate.now()).getDays() > 2) return true;
-        else if (this.wordGroup == WordGroup.third &&
-                Period.between(this.last_checked,LocalDate.now()).getDays() > 7) return true;
-        return false;
+    public Boolean getStatusLearning() {
+        return this.wordGroup == WordGroup.newLearning;
+    }
+    public void setStatusLearning(Boolean statusLearning) {
+        this.statusLearning = statusLearning;
     }
 
-    public void setShow(Boolean show) {
-        this.show = show;
+    public Boolean getStatusRepeating() {
+        if (this.wordGroup == WordGroup.first && Period.between(this.last_checked,LocalDate.now()).getDays() > 1) return true;
+        if (this.wordGroup == WordGroup.second && Period.between(this.last_checked,LocalDate.now()).getDays() > 2) return true;
+        return this.wordGroup == WordGroup.third && Period.between(this.last_checked, LocalDate.now()).getDays() > 7;
+    }
+    public void setStatusRepeating(Boolean statusRepeating) {
+        this.statusRepeating = statusRepeating;
     }
 
     public DeckWord(){}
 
-    public DeckWord(Deck deck, Word word, Boolean learnt, LocalDate last_checked, WordGroup wordGroup) {
+    public DeckWord(Deck deck, Word word,  LocalDate last_checked, WordGroup wordGroup) {
         this.deck = deck;
         this.word = word;
-        this.learnt = learnt;
         this.last_checked = last_checked;
         this.wordGroup = wordGroup;
     }
 
-    public DeckWord(DeckWordKey id, Deck deck, Word word, Boolean learnt, LocalDate last_checked, WordGroup wordGroup) {
+    public DeckWord(DeckWordKey id, Deck deck, Word word,  LocalDate last_checked, WordGroup wordGroup) {
         this.id = id;
         this.deck = deck;
         this.word = word;
-        this.learnt = learnt;
         this.last_checked = last_checked;
         this.wordGroup = wordGroup;
     }

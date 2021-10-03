@@ -1,17 +1,21 @@
 import React from 'react'
-import { Container, Alert, Button } from 'react-bootstrap'
+import { Container, Alert, Button, Card } from 'react-bootstrap'
+import { nanoid } from 'nanoid'
 
-export default function Deck({ deck }) {
+
+export default function Deck({ deck, handleShowAppChange }) {
     return (
-        <Container>
-                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Button variant="primary">новые слова  </Button>
-                <Button variant="success">повторение</Button>
+        <Card style={{ width: '20rem', height: '25rem' }} border="primary" >
+            <Card.Body>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Button variant="primary" onClick={handleShowAppChange}>новые слова  </Button>
+                    <Button variant="success" onClick={handleShowAppChange}>повторение</Button>
                 </div>
-         <Alert variant="light">
-            <h1>{deck.name}</h1>
-            {deck.words.map(word => <p>{word}</p>)}
-        </Alert>
-        </Container>
+                <Alert variant="light">
+                    <h1>{deck.name}</h1>
+                    {deck.words.map(word => <p key={nanoid()}>{word}</p>)}
+                </Alert>
+            </Card.Body>
+        </Card>
     )
 }

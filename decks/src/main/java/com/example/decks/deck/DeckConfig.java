@@ -16,11 +16,14 @@ public class DeckConfig {
     CommandLineRunner commandLineRunnerDeck(
             DeckRepository deckRepository){
         return args -> {
-            Deck John = new Deck(
+            Deck seconddeck = new Deck(
                     "chadDeck"
             );
+            Deck firstdeck = new Deck(
+                    "firstdeck"
+            );
 
-            deckRepository.saveAll(List.of(John));
+            deckRepository.saveAll(List.of(firstdeck,seconddeck));
         };
     }
 }

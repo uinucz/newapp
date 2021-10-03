@@ -2,6 +2,7 @@ package com.example.decks.deck;
 
 import com.example.decks.appuser.Appuser;
 import com.example.decks.deckword.DeckWord;
+import com.example.decks.deckword.WordGroup;
 import com.example.decks.word.Word;
 
 import javax.persistence.*;
@@ -24,9 +25,10 @@ public class Deck {
     )
     @Column(name = "deck_id")
     private Long id;
+    private String name;
     @Transient
     private Boolean learnt;
-    private String name;
+
 
 
     @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL)
@@ -49,6 +51,7 @@ public class Deck {
     public Deck(String name) {
         this.name = name;
     }
+
     public Deck(Long id, String name) {
         this.id = id;
         this.name = name;
@@ -71,9 +74,8 @@ public class Deck {
     }
 
     public Boolean getLearnt() {
-        long wordsToShow = this.deckwords.stream().map(i -> i.getShow() == true).count();
-        if(wordsToShow > 0) return true;
-        return false;
+        long wordsNotLearnt = this.deckwords.stream().map(i -> i.getWordGroup() != WordGroup.learnt).count();
+        return wordsNotLearnt == 0;
     }
 
     public void setLearnt(Boolean learnt) {

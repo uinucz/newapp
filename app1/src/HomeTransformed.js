@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Alert, Popover, OverlayTrigger, Button } from "react-bootstrap";
+import { Alert, Popover, OverlayTrigger, Button, Dropdown, DropdownButton } from "react-bootstrap";
 import axios from 'axios'
+import { nanoid } from 'nanoid'
+
 
 const padding = {
     padding: 30,
@@ -35,7 +37,7 @@ const loadingPopover = (
     </Popover>
 );
 
-function getPopover(apiData, loadingPopover) {
+function getPopover(apiData, loadingPopover, decks, deckChoice, handleDeckChoice, addWord) {
     switch (apiData.status) {
         case "loading":
             return loadingPopover;
@@ -57,10 +59,17 @@ function getPopover(apiData, loadingPopover) {
                         <h6>{apiData.definition}</h6>
                         <h6><i>{apiData.example}</i></h6>
                     </Popover.Body>
-                    <div style={padding}>
-                        <Button >добавить в колоду</Button>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: 10 }}>
+                        <DropdownButton id="dropdown-basic-button" title={deckChoice} variant="outline-dark" >
+                            {decks.map(deck =>
+                                <Dropdown.Item key={nanoid()} onClick={() => handleDeckChoice(deck.name)}>{deck.name}</Dropdown.Item>
+                            )}
+                        </DropdownButton>
+                        <Button onClick={addWord} variant={deckChoice == "колода" ? "outline-dark" : "primary"}>добавить</Button>
                     </div>
-                </Popover>
+
+                </Popover >
             );
     }
 }
@@ -69,6 +78,21 @@ function getPopover(apiData, loadingPopover) {
 
 export default function HomeTransformed({ handleTransform, textToHandle }) {
     const [words, _setWords] = useState(() => identifyWords(textToHandle));
+    const [decks, setDecks] = useState([])
+    const [deckChoice, setDeckChoice] = useState("колода")
+
+    useEffect(() => {
+        axios
+            .get(`http://localhost:8080/api/v1/deck`)
+            .then(response => {
+                const body = response.data;
+                setDecks(body);
+                console.log(body)
+            })
+            .catch(error =>
+                console.error("Failed to get definition: ", error)
+            );
+    }, [])
 
     const text = words.text;
 
@@ -129,7 +153,26 @@ export default function HomeTransformed({ handleTransform, textToHandle }) {
         return () => unsubscribed = true;
     }, [selectedWordObj]);
 
-    const selectedWordPopover = getPopover(apiData, loadingPopover);
+    const handleDeckChoice = (x) => {
+        setDeckChoice(x)
+    }
+
+    const addWord = () => {
+        console.log('addword')
+        if (deckChoice == "колода") return
+        axios.post(`http://localhost:8080/api/v1/deck"`, {
+            word: apiData.word,
+            definition: apiData.definition,
+            transcription: apiData.text,
+            example: apiData.example
+        })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            })
+    }
+
+    const selectedWordPopover = getPopover(apiData, loadingPopover, decks, deckChoice, handleDeckChoice, addWord);
 
     return (
         <div>
