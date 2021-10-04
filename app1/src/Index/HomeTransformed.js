@@ -61,9 +61,9 @@ function getPopover(apiData, loadingPopover, decks, deckChoice, handleDeckChoice
                     </Popover.Body>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', padding: 10 }}>
-                        <DropdownButton id="dropdown-basic-button" title={deckChoice} variant="outline-dark" >
+                        <DropdownButton id="dropdown-basic-button" title={deckChoice == "колода" ? "колода" : deckChoice.name} variant="outline-dark" >
                             {decks.map(deck =>
-                                <Dropdown.Item key={nanoid()} onClick={() => handleDeckChoice(deck.name)}>{deck.name}</Dropdown.Item>
+                                <Dropdown.Item key={nanoid()} onClick={() => handleDeckChoice(deck.name, deck.id)}>{deck.name}</Dropdown.Item>
                             )}
                         </DropdownButton>
                         <Button onClick={addWord} variant={deckChoice == "колода" ? "outline-dark" : "primary"}>добавить</Button>
@@ -90,7 +90,7 @@ export default function HomeTransformed({ handleTransform, textToHandle }) {
                 console.log(body)
             })
             .catch(error =>
-                console.error("Failed to get definition: ", error)
+                console.error(error)
             );
     }, [])
 
@@ -153,17 +153,18 @@ export default function HomeTransformed({ handleTransform, textToHandle }) {
         return () => unsubscribed = true;
     }, [selectedWordObj]);
 
-    const handleDeckChoice = (x) => {
-        setDeckChoice(x)
+    const handleDeckChoice = (name, id) => {
+        setDeckChoice({ name: name, id: id })
     }
 
     const addWord = () => {
         console.log('addword')
+
         if (deckChoice == "колода") return
-        axios.post(`http://localhost:8080/api/v1/deck"`, {
-            word: apiData.word,
+        axios.post(`http://localhost:8080/api/v1/word/${deckChoice.id}`, {
+            body: apiData.word,
             definition: apiData.definition,
-            transcription: apiData.text,
+            transcription: apiData.transcription,
             example: apiData.example
         })
             .then(res => {

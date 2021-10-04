@@ -1,4 +1,4 @@
-package com.example.decks.deckword;
+package com.example.decks.word;
 
 public enum WordGroup {
     newUnseen,

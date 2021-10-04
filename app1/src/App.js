@@ -4,8 +4,8 @@ import {
   BrowserRouter as Router,
   Switch, Route, Link
 } from "react-router-dom"
-import Home from './Home'
-import Decks from './Decks'
+import Home from './Index/Home'
+import Decks from './Decks/Decks'
 
 const pagePadding = {
   padding: 40,

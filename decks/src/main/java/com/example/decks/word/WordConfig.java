@@ -13,36 +13,36 @@ import java.util.List;
 @Configuration
 public class WordConfig {
 
-    @Bean
-    CommandLineRunner commandLineRunnerWord(
-            WordRepository wordRepository){
-        return args -> {
-            Word firstWord = new Word(
-
-                    "greeting",
-                    "hello",
-                    "hello world",
-                    "hello"
-
-                );
-            Word secondWord = new Word(
-
-                    "animal",
-                    "dog",
-                    "dog and cat",
-                    "dog"
-
-            );
-            Word thirdWord = new Word(
-
-                    "fruit",
-                    "apple",
-                    "green apple",
-                    "apple"
-
-            );
-
-            wordRepository.saveAll(List.of(firstWord, secondWord, thirdWord));
-        };
-    }
+//    @Bean
+//    CommandLineRunner commandLineRunnerWord(
+//            WordRepository wordRepository){
+//        return args -> {
+//            Word firstWord = new Word(
+//
+//                    "greeting",
+//                    "hello",
+//                    "hello world",
+//                    "hello"
+//
+//                );
+//            Word secondWord = new Word(
+//
+//                    "animal",
+//                    "dog",
+//                    "dog and cat",
+//                    "dog"
+//
+//            );
+//            Word thirdWord = new Word(
+//
+//                    "fruit",
+//                    "apple",
+//                    "green apple",
+//                    "apple"
+//
+//            );
+//
+//            wordRepository.saveAll(List.of(firstWord, secondWord, thirdWord));
+//        };
+//    }
 }

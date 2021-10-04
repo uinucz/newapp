@@ -1,12 +1,12 @@
 package com.example.decks.deck;
 
 import com.example.decks.appuser.Appuser;
-import com.example.decks.deckword.DeckWord;
-import com.example.decks.deckword.WordGroup;
 import com.example.decks.word.Word;
+import com.example.decks.word.Word;
+import com.example.decks.word.WordGroup;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.awt.print.Book;
 import java.util.List;
 
 @Entity
@@ -29,10 +29,9 @@ public class Deck {
     @Transient
     private Boolean learnt;
 
-
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL)
-    private List<DeckWord> deckwords;
+    private List<Word> words;
 
     @ManyToOne
     @JoinColumn(name="appuser_id",referencedColumnName="appuser_id")
@@ -74,12 +73,20 @@ public class Deck {
     }
 
     public Boolean getLearnt() {
-        long wordsNotLearnt = this.deckwords.stream().map(i -> i.getWordGroup() != WordGroup.learnt).count();
+        long wordsNotLearnt = this.words.stream().map(i -> i.getWordGroup() != WordGroup.learnt).count();
         return wordsNotLearnt == 0;
     }
 
     public void setLearnt(Boolean learnt) {
         this.learnt = learnt;
+    }
+
+    public List<Word> getWords() {
+        return words;
+    }
+
+    public void setWords(List<Word> words) {
+        this.words = words;
     }
 
 

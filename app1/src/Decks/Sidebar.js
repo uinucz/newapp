@@ -8,8 +8,6 @@ import { nanoid } from 'nanoid'
 
 export default function Sidebar({ decks, handleChosenDeck }) {
     return (
-
-
         <Card style={{ width: '10rem', height: '25rem' }} className="border-0" >
             <ListGroup variant="flush" >
                 {decks.map(deck =>
