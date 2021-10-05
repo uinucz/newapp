@@ -9,6 +9,9 @@ import Deck from './Deck'
 import AppPage from './AppPage'
 import axios from 'axios'
 
+import { initializeDecks } from './reducers/deckReducer'
+import { useDispatch } from 'react-redux'
+
 const pagePadding = {
     padding: 40,
 }
@@ -18,6 +21,11 @@ export default function Decks() {
     const [chosenDeck, setChosenDeck] = useState(null)
     const [showApp, setShowApp] = useState(false)
     const [mode, setMode] = useState("new")
+
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(initializeNotes()) 
+    },[dispatch]) 
 
 
     useEffect(() => {

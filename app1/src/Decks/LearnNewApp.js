@@ -7,10 +7,9 @@ async function callAPI(id, wordGroup) {
 }
 
 export default function LearnNewApp({ deck, handleShowAppChange, handleDecksChange }) {
-    let words = deck.words
+    let words = deck.words.filter(x => x.wordGroup == "newLearning")
 
     useEffect(() => {
-        words = words.filter(x => x.wordGroup == "newLearning")
         let unsubscribed = false;
         if (words.length < 10) {
             let vacant = 10 - words.length

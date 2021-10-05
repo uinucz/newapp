@@ -9,17 +9,17 @@ export default function CardPage({ words, handleShowAppChange, leftButtonFunc, r
 
 
     return (
-        <Card style={{ width: '20rem', height: '35rem' }} border="primary" >
+        <Card style={{ width: '20rem', height: '30rem' }} border="primary" >
             <Card.Body>
                 <Card.Title>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <p> </p>
+                    <h1>{currentWord.body}</h1>
                         <Button variant="outline-dark" onClick={handleShowAppChange}>назад</Button>
                     </div>
 
                 </Card.Title>
                 <div>
-                    <h1>{currentWord.body}</h1>
+                    
                     <b>{currentWord.transcription}</b>
                 </div>
                 <br />
