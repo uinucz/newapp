@@ -46,7 +46,8 @@ export default function LearnNewApp({ deck, handleShowAppChange, handleDecksChan
     if (words.length !== 0) return (
         <CardPage words={words} handleShowAppChange={handleShowAppChange} leftButtonFunc={memorized} rightButtonFunc={showAgain} />
     )
-    else 
+    else {
         return (<Deck deck={deck} handleShowAppChange={handleShowAppChange} ></Deck>)
+    }
 
 }

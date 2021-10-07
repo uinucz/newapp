@@ -24,18 +24,18 @@ export default function CardPage({ words, handleShowAppChange, leftButtonFunc, r
 
 
     return (
-        <Card style={{ width: '20rem', height: '25rem' }} border="primary" >
+        <Card style={{ width: '25rem', height: '25rem' }} border="primary" >
             {!loading ?
                 <Fragment>
                     <Card.Body>                
-                        <Card.Title>
+                        <Card.Title  >
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <h1>{currentWord.body}</h1>
-                                <Button variant="outline-dark" onClick={handleShowAppChange}>назад</Button>
+                                <h1  >{currentWord.body}</h1>
+                                <Button   variant="outline-dark" onClick={handleShowAppChange}>назад</Button>
                             </div>
 
                         </Card.Title>
-                            <b>{currentWord.transcription}</b>    
+                            {currentWord.transcription}   
                         <br />
                         {
                             showDefinition ?
@@ -44,7 +44,7 @@ export default function CardPage({ words, handleShowAppChange, leftButtonFunc, r
                                     <i>{currentWord.example}</i>
                                 </>
                                 :
-                                <Alert style={{ height: '5rem' }} onClick={() => setShowDefinition(showDefinition => !showDefinition)}>{"        "}</Alert>
+                                <Alert className="mt-2" style={{ height: '11rem' }} onClick={() => setShowDefinition(showDefinition => !showDefinition)}></Alert>
                         }
                     </Card.Body>
                  

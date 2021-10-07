@@ -96,8 +96,11 @@ public class Deck {
     }
 
     public Boolean getShowWordsToRevise() {
-        System.out.println(this.words.stream().map(w -> w.getStatusRepeating()).count() + "  words to revise" + java.time.LocalDateTime.now().toString());
-        return this.words.stream().map(w -> w.getStatusRepeating()).count() > 0;
+        System.out.println(this.words.stream().map(Word::getStatusRepeating).count() + "  words to revise " + java.time.LocalDateTime.now().toString());
+        for (Word word : this.words) {
+            System.out.println(word.getStatusRepeating());
+        }
+        return this.words.stream().map(Word::getStatusRepeating).count() > 0;
     }
 
     public void setShowWordsToRevise(Boolean showWordsToRevise) {

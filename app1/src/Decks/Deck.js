@@ -22,7 +22,7 @@ export default function Deck({ deck, handleShowAppChange }) {
     return (
         <Card style={{ width: '20rem' }} border="primary" className="overflow-auto" >
             <Card.Header className="bg-transparent border-0">
-                <ProgressBar variant="info" >
+                <ProgressBar variant="info" className="mt-3">
                     <ProgressBar now={newWords} max={all} key={1} />
                     <ProgressBar variant="warning" now={repeating} max={all} key={2} />
                     <ProgressBar variant="success" now={learnt} max={all} key={3} />
@@ -34,7 +34,7 @@ export default function Deck({ deck, handleShowAppChange }) {
                     <Button variant={newWords > 0 ? "primary" : "outline-dark"} onClick={newWords > 0 ? () => handleShowAppChange("new") : () => { }}>новые слова  </Button>
                     <Button variant={deck.showWordsToRevise ? "warning" : "outline-dark"} onClick={repeating > 0 ? () => handleShowAppChange("revise") : () => { }}>повторение</Button>
                 </div>
-                <Alert variant="light" className="mb-0 pb-0">
+                <Alert variant="light" className="mb-0 mt-3 pb-0" >
                     <h1>{deck.name}</h1>
                     {deck.words.map(word => <span key={nanoid()}>{word.body}<br/> </span>)}
                 </Alert>

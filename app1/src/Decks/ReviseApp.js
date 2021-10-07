@@ -47,5 +47,7 @@ export default function ReviseApp({ deck, handleShowAppChange, handleDecksChange
     if (words.length !== 0) return (
         <CardPage words={words} handleShowAppChange={handleShowAppChange} leftButtonFunc={memorized} rightButtonFunc={showAgain} />
     )
-    else return (<Deck  deck={deck} handleShowAppChange={handleShowAppChange} ></Deck>)
+    else {
+        return (<Deck  deck={deck} handleShowAppChange={handleShowAppChange} ></Deck>)
+    } 
 }

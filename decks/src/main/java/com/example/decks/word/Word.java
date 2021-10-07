@@ -35,9 +35,9 @@ public class Word {
     @Enumerated(EnumType.STRING)
     private WordGroup wordGroup = WordGroup.newUnseen;
     @Transient
-    private Boolean statusLearning = false;
+    private Boolean statusLearning;
     @Transient
-    private Boolean statusRepeating = false;
+    private Boolean statusRepeating;
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name="deck_id",referencedColumnName="deck_id")
