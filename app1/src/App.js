@@ -15,6 +15,7 @@ const padding = {
 }
 
 const App = () => {
+  console.log('app')
   return (
     <Container style={pagePadding} >
       <h1 >DECKS APP</h1>

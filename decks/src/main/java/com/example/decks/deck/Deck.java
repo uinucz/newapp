@@ -7,6 +7,7 @@ import com.example.decks.word.WordGroup;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -28,6 +29,10 @@ public class Deck {
     private String name;
     @Transient
     private Boolean learnt;
+    @Transient
+    private Boolean showWordsToRevise;
+
+
 
     @JsonManagedReference
     @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL)
@@ -42,6 +47,7 @@ public class Deck {
         return "Deck{" +
                 "id=" + id +
                 ", learnt=" + learnt +
+                ", showWordsToRevise=" + showWordsToRevise +
                 '}';
     }
 
@@ -87,6 +93,15 @@ public class Deck {
 
     public void setWords(List<Word> words) {
         this.words = words;
+    }
+
+    public Boolean getShowWordsToRevise() {
+        System.out.println(this.words.stream().map(w -> w.getStatusRepeating()).count() + "  words to revise" + java.time.LocalDateTime.now().toString());
+        return this.words.stream().map(w -> w.getStatusRepeating()).count() > 0;
+    }
+
+    public void setShowWordsToRevise(Boolean showWordsToRevise) {
+        this.showWordsToRevise = showWordsToRevise;
     }
 
 

@@ -160,7 +160,7 @@ export default function HomeTransformed({ handleTransform, textToHandle }) {
     const addWord = () => {
         console.log('addword')
 
-        if (deckChoice == "колода") return
+        if (deckChoice === "колода") return
         axios.post(`http://localhost:8080/api/v1/word/${deckChoice.id}`, {
             body: apiData.word,
             definition: apiData.definition,

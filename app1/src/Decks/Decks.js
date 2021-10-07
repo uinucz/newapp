@@ -9,12 +9,10 @@ import Deck from './Deck'
 import AppPage from './AppPage'
 import axios from 'axios'
 
-import { initializeDecks } from './reducers/deckReducer'
-import { useDispatch } from 'react-redux'
-
 const pagePadding = {
     padding: 40,
 }
+
 
 export default function Decks() {
     const [decks, setDecks] = useState([])
@@ -22,12 +20,8 @@ export default function Decks() {
     const [showApp, setShowApp] = useState(false)
     const [mode, setMode] = useState("new")
 
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(initializeNotes()) 
-    },[dispatch]) 
-
-
+    console.log('decks')
+ 
     useEffect(() => {
         function callAPI() {
             axios
@@ -51,17 +45,11 @@ export default function Decks() {
         setChosenDeck(id)
         setShowApp(false)
     }
-
-
     function handleDecksChange(newWord) {
-        let newDecks = JSON.parse(JSON.stringify(decks))
-        let newDeck = newDecks.find(deck => deck.id == chosenDeck)
-        newDeck = newDeck.words.map(d => d.id == newWord.id ? newWord : d)
-        setDecks(newDecks)
+        setDecks(decks.map(deck => deck.id === chosenDeck ? {...deck, words: deck.words.map(word=> word.id === newWord.id ? newWord : word)} : deck))
     }
 
     return (
-
         <Container style={{ display: 'flex', flexDirection: 'row' }}>
             <Router >
 
@@ -87,8 +75,6 @@ export default function Decks() {
 
             </Router>
         </Container>
-
     )
-
-
+    
 }
