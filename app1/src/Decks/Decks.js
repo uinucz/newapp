@@ -46,7 +46,10 @@ export default function Decks() {
         setShowApp(false)
     }
     function handleDecksChange(newWord) {
-        setDecks(decks.map(deck => deck.id === chosenDeck ? {...deck, words: deck.words.map(word=> word.id === newWord.id ? newWord : word)} : deck))
+        setDecks(decks.map(deck => deck.id === chosenDeck ? { ...deck, words: deck.words.map(word => word.id === newWord.id ? newWord : word) } : deck))
+    }
+    function addDeck(deckName) {
+        setDecks(deck => deck.concat({name: deckName}))
     }
 
     return (
@@ -54,7 +57,7 @@ export default function Decks() {
             <Router >
 
                 {decks ?
-                    <Sidebar decks={decks} handleChosenDeck={handleChosenDeck} />
+                    <Sidebar decks={decks} handleChosenDeck={handleChosenDeck} addDeck={addDeck} />
                     :
                     <h1>Загрузка</h1>
                 }

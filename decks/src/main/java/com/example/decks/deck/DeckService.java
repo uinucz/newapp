@@ -25,4 +25,9 @@ public class DeckService {
     }
 
 
+    public void addNewDeck(String deckName) {
+        Deck deck = new Deck(deckName);
+        deckRepository.save(deck);
+    }
+
 }

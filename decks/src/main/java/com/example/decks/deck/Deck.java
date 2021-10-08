@@ -79,7 +79,7 @@ public class Deck {
     }
 
     public Boolean getLearnt() {
-        long wordsNotLearnt = this.words.stream().map(i -> i.getWordGroup() != WordGroup.learnt).count();
+        long wordsNotLearnt = this.words.stream().filter(i -> i.getWordGroup() != WordGroup.learnt).count();
         return wordsNotLearnt == 0;
     }
 
@@ -96,11 +96,7 @@ public class Deck {
     }
 
     public Boolean getShowWordsToRevise() {
-        System.out.println(this.words.stream().map(Word::getStatusRepeating).count() + "  words to revise " + java.time.LocalDateTime.now().toString());
-        for (Word word : this.words) {
-            System.out.println(word.getStatusRepeating());
-        }
-        return this.words.stream().map(Word::getStatusRepeating).count() > 0;
+        return this.words.stream().anyMatch(Word::getStatusRepeating);
     }
 
     public void setShowWordsToRevise(Boolean showWordsToRevise) {

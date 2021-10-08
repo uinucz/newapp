@@ -195,7 +195,7 @@ export default function HomeTransformed({ handleTransform, textToHandle }) {
                     )
                 })}
             </Alert>
-            <Button onClick={handleTransform}>назад</Button>
+            <Button onClick={handleTransform}>другой текст</Button>
         </div>
 
 
