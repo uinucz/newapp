@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +43,23 @@ public class WordService {
     public void editWordGroup(Long wordID, WordGroup wordGroup) {
         Word toUpdate = wordRepository.findById(wordID)
                 .orElseThrow(() -> new IllegalStateException("word with id " + wordID + " doesnt exist"));
-        if (toUpdate.getWordGroup() != WordGroup.newUnseen) {
-            toUpdate.setLast_checked(LocalDate.now());
-        }
+        toUpdate.setLast_checked(LocalDateTime.now());
+
         toUpdate.setWordGroup(wordGroup);
+
+//        boolean stat;
+//        if (toUpdate.getWordGroup()  == WordGroup.first & Duration.between(toUpdate.getLast_checked(),LocalDateTime.now()).toHours() > 24) stat =  true;
+//        if (toUpdate.getWordGroup() == WordGroup.second && Duration.between(toUpdate.getLast_checked(),LocalDateTime.now()).toHours() > 28) stat =  true;
+//        stat =  toUpdate.getWordGroup() == WordGroup.third && Duration.between(toUpdate.getLast_checked(), LocalDateTime.now()).toHours() > 196;
+//        toUpdate.setStatusRepeating(stat);
+//        deckRepository.findById(toUpdate.getDeck().getId()).map(deck -> {
+//            List<Word> newwords = deck.getWords();
+//            newwords.add(toUpdate);
+//            deck.setWords(newwords);
+//            deckRepository.save(deck);
+//            deck.setShowWordsToRevise(deck.getWords().stream().map(Word::getStatusRepeating).count() > 0);
+//            return deckRepository.save(deck);
+//        }).orElseThrow(() -> new IllegalStateException("PostId  not found"));
 
     }
 }

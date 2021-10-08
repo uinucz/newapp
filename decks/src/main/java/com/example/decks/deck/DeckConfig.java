@@ -17,7 +17,7 @@ public class DeckConfig {
             DeckRepository deckRepository){
         return args -> {
             Deck seconddeck = new Deck(
-                    "chadDeck"
+                    "secondDeck"
             );
             Deck firstdeck = new Deck(
                     "firstdeck"

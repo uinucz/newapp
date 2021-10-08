@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CardPage from './CardPage'
 import Deck from './Deck'
 
@@ -12,9 +12,12 @@ function useForceUpdate(){
 }
 
 export default function ReviseApp({ deck, handleShowAppChange, handleDecksChange  }) {
-    let words = deck.words.filter(word => word.wordGroup === ("first" || "second" || "third"))
+    let words =  deck.words.filter(word => word.statusRepeating === true) 
+    
+    
     const forceUpdate = useForceUpdate();
 
+    // const words = deck.words.filter(x => x.statusRepeating === true)
     console.log("revise app")
 
 
@@ -35,9 +38,10 @@ export default function ReviseApp({ deck, handleShowAppChange, handleDecksChange
         }
         callAPI(word.id, newGroup)
         let wordLearningToFirst = {
-            ...word, wordGroup: newGroup
+            ...word, wordGroup: newGroup, statusRepeating: false
         }
         handleDecksChange(wordLearningToFirst)
+        forceUpdate()
     }
 
     function showAgain() {

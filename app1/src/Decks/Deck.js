@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Container, Alert, Button, Card, ProgressBar } from 'react-bootstrap'
 import { nanoid } from 'nanoid'
 
@@ -17,7 +17,16 @@ export default function Deck({ deck, handleShowAppChange }) {
     const repeating = occurrences.first + occurrences.second + occurrences.third
     const all = learnt + newWords + repeating
 
-    console.log(repeating)
+    const [revising, setRevising] = useState(0)
+    useEffect(() => {
+        var x = 0
+        for (var w of deck.words){
+            if (w.statusRepeating) x++
+        }
+        setRevising(x)
+    }, [deck])
+    
+    console.log('revisig' + revising)
 
     return (
         <Card style={{ width: '20rem' }} border="primary" className="overflow-auto" >
@@ -32,7 +41,7 @@ export default function Deck({ deck, handleShowAppChange }) {
 
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button variant={newWords > 0 ? "primary" : "outline-dark"} onClick={newWords > 0 ? () => handleShowAppChange("new") : () => { }}>новые слова  </Button>
-                    <Button variant={deck.showWordsToRevise ? "warning" : "outline-dark"} onClick={repeating > 0 ? () => handleShowAppChange("revise") : () => { }}>повторение</Button>
+                    <Button variant={revising > 0 ? "warning" : "outline-dark"} onClick={repeating > 0 ? () => handleShowAppChange("revise") : () => { }}>повторение</Button>
                 </div>
                 <Alert variant="light" className="mb-0 mt-3 pb-0" >
                     <h1>{deck.name}</h1>

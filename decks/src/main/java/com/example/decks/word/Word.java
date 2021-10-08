@@ -5,7 +5,9 @@ import com.example.decks.deck.Deck;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +33,7 @@ public class Word {
     private String definition;
     private String transcription;
     private String example;
-    private LocalDate last_checked;
+    private LocalDateTime last_checked = LocalDateTime.now();
     @Enumerated(EnumType.STRING)
     private WordGroup wordGroup = WordGroup.newUnseen;
     @Transient
@@ -48,7 +50,7 @@ public class Word {
 
     }
 
-    public Word(String body, String definition, String transcription, String example, LocalDate last_checked, WordGroup wordGroup, Boolean statusLearning, Boolean statusRepeating) {
+    public Word(String body, String definition, String transcription, String example, LocalDateTime last_checked, WordGroup wordGroup, Boolean statusLearning, Boolean statusRepeating) {
         this.body = body;
         this.definition = definition;
         this.transcription = transcription;
@@ -59,7 +61,7 @@ public class Word {
         this.statusRepeating = statusRepeating;
     }
 
-    public Word(String body, Deck deck, String definition, String transcription, String example, LocalDate last_checked, WordGroup wordGroup, Boolean statusLearning, Boolean statusRepeating) {
+    public Word(String body, Deck deck, String definition, String transcription, String example, LocalDateTime last_checked, WordGroup wordGroup, Boolean statusLearning, Boolean statusRepeating) {
         this.body = body;
         this.definition = definition;
         this.transcription = transcription;
@@ -105,9 +107,9 @@ public class Word {
     }
 
     public Boolean getStatusRepeating() {
-        if (this.wordGroup == WordGroup.first && Period.between(this.last_checked,LocalDate.now()).getDays() > 1) return true;
-        if (this.wordGroup == WordGroup.second && Period.between(this.last_checked,LocalDate.now()).getDays() > 2) return true;
-        return this.wordGroup == WordGroup.third && Period.between(this.last_checked, LocalDate.now()).getDays() > 7;
+        if (this.wordGroup == WordGroup.first & Duration.between(this.last_checked,LocalDateTime.now()).toSeconds() > 10) return true;
+        if (this.wordGroup == WordGroup.second && Duration.between(this.last_checked,LocalDateTime.now()).toSeconds() > 10) return true;
+        return this.wordGroup == WordGroup.third && Duration.between(this.last_checked, LocalDateTime.now()).toSeconds() > 10;
     }
     public void setStatusRepeating(Boolean statusRepeating) {
         this.statusRepeating = statusRepeating;
@@ -160,11 +162,11 @@ public class Word {
         this.example = example;
     }
 
-    public LocalDate getLast_checked() {
+    public LocalDateTime getLast_checked() {
         return last_checked;
     }
 
-    public void setLast_checked(LocalDate last_checked) {
+    public void setLast_checked(LocalDateTime last_checked) {
         this.last_checked = last_checked;
     }
 

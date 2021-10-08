@@ -23,7 +23,7 @@ const App = () => {
         <Container style={padding}>
           <Link style={padding} to="/">Home</Link>
           <Link style={padding} to="/decks">Мои колоды</Link>
-          <Link style={padding} to="/users">Log out</Link>
+          {/* <Link style={padding} to="/users">Log out</Link> */}
         </Container>
 
         <Switch>
