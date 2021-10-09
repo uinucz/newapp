@@ -49,7 +49,7 @@ export default function Decks() {
         setDecks(decks.map(deck => deck.id === chosenDeck ? { ...deck, words: deck.words.map(word => word.id === newWord.id ? newWord : word) } : deck))
     }
     function addDeck(deckName) {
-        setDecks(deck => deck.concat({name: deckName}))
+         setDecks(decks => decks.concat({ name: deckName, id: decks.length + 1, words: []}))
     }
 
     return (

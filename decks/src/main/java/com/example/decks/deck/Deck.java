@@ -31,6 +31,8 @@ public class Deck {
     private Boolean learnt;
     @Transient
     private Boolean showWordsToRevise;
+    @Transient
+    private Integer WordCount;
 
 
 
@@ -101,6 +103,14 @@ public class Deck {
 
     public void setShowWordsToRevise(Boolean showWordsToRevise) {
         this.showWordsToRevise = showWordsToRevise;
+    }
+
+    public Integer getWordCount() {
+        return this.words.size();
+    }
+
+    public void setWordCount(Integer wordCount) {
+        WordCount = wordCount;
     }
 
 
