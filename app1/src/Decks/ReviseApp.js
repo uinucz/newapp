@@ -1,44 +1,46 @@
-import axios from 'axios'
-import React, { useState, useEffect } from 'react'
-import CardPage from './CardPage'
-import Deck from './Deck'
+import axios from "axios"
+import React, { useState, useEffect } from "react"
+import CardPage from "./CardPage"
+import Deck from "./Deck"
 
 async function callAPI(id, wordGroup) {
     await axios.put(`http://localhost:8080/api/v1/word/${id}/${wordGroup}`)
 }
-function useForceUpdate(){
-    const [value, setValue] = useState(0); // integer state
-    return () => setValue(value => value + 1); // update the state to force render
+function useForceUpdate() {
+    const [value, setValue] = useState(0) // integer state
+    return () => setValue((value) => value + 1) // update the state to force render
 }
 
-export default function ReviseApp({ deck, handleShowAppChange, handleDecksChange  }) {
-    let words =  deck.words.filter(word => word.statusRepeating === true) 
-    
-    
-    const forceUpdate = useForceUpdate();
+export default function ReviseApp({
+    deck,
+    handleShowAppChange,
+    handleDecksChange,
+    handleSetShowApp,
+}) {
+    let words = deck.words.filter((word) => word.statusRepeating === true)
 
-    // const words = deck.words.filter(x => x.statusRepeating === true)
-    console.log("revise app")
-
+    const forceUpdate = useForceUpdate()
 
     function memorized(word) {
         let newGroup
         switch (word.wordGroup) {
-            case 'first':
-                newGroup = 'second'
+            case "first":
+                newGroup = "second"
                 break
-            case 'second':
-                newGroup = 'third'
-                break          
-            case 'third':
-                newGroup = 'learnt'
+            case "second":
+                newGroup = "third"
+                break
+            case "third":
+                newGroup = "learnt"
                 break
             default:
                 break
         }
         callAPI(word.id, newGroup)
         let wordLearningToFirst = {
-            ...word, wordGroup: newGroup, statusRepeating: false
+            ...word,
+            wordGroup: newGroup,
+            statusRepeating: false,
         }
         handleDecksChange(wordLearningToFirst)
         forceUpdate()
@@ -48,10 +50,22 @@ export default function ReviseApp({ deck, handleShowAppChange, handleDecksChange
         forceUpdate()
     }
 
-    if (words.length !== 0) return (
-        <CardPage words={words} handleShowAppChange={handleShowAppChange} leftButtonFunc={memorized} rightButtonFunc={showAgain} />
-    )
+    if (words.length !== 0)
+        return (
+            <CardPage
+                words={words}
+                handleShowAppChange={handleShowAppChange}
+                leftButtonFunc={memorized}
+                rightButtonFunc={showAgain}
+            />
+        )
     else {
-        return (<Deck  deck={deck} handleShowAppChange={handleShowAppChange} ></Deck>)
-    } 
+        return (
+            <Deck
+                deck={deck}
+                handleShowAppChange={handleShowAppChange}
+                handleSetShowApp={handleSetShowApp}
+            ></Deck>
+        )
+    }
 }

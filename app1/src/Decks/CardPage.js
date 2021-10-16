@@ -9,7 +9,6 @@ export default function CardPage({ words, handleShowAppChange, leftButtonFunc, r
     
 
     useEffect(() => {
-        console.log('useeffect')
         setShowDefinition(false)
             setLoading(true)
             setCurrentWord((currentWord) => {

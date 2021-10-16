@@ -1,16 +1,29 @@
-import React, {useState, useEffect} from 'react'
-import { Container, Alert, Button, Card, ProgressBar } from 'react-bootstrap'
-import { nanoid } from 'nanoid'
+import React, { useState, useEffect, useReducer } from "react"
+import { Container, Alert, Button, Card, ProgressBar } from "react-bootstrap"
+import { nanoid } from "nanoid"
 
+export default function Deck({ handleSetShowApp, deck, handleShowAppChange }) {
+    const [_, forceUpdate] = useReducer((x) => x + 1, 0)
 
-export default function Deck({ deck, handleShowAppChange }) {
-    
+    useEffect(() => {
+        handleSetShowApp()
+    }, [])
 
-    console.log('deck')
-
-    const occurrences = deck.words.map(x => x.wordGroup).reduce(function (acc, curr) {
-        return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
-    }, { "newUnseen": 0, "newLearning": 0, "first": 0, "second": 0, "third": 0, "learnt": 0 })
+    const occurrences = deck.words
+        .map((x) => x.wordGroup)
+        .reduce(
+            function (acc, curr) {
+                return acc[curr] ? ++acc[curr] : (acc[curr] = 1), acc
+            },
+            {
+                newUnseen: 0,
+                newLearning: 0,
+                first: 0,
+                second: 0,
+                third: 0,
+                learnt: 0,
+            }
+        )
 
     const learnt = occurrences.learnt
     const newWords = occurrences.newLearning + occurrences.newUnseen
@@ -20,32 +33,68 @@ export default function Deck({ deck, handleShowAppChange }) {
     const [revising, setRevising] = useState(0)
     useEffect(() => {
         var x = 0
-        for (var w of deck.words){
+        for (var w of deck.words) {
             if (w.statusRepeating) x++
         }
         setRevising(x)
     }, [deck])
-    
-    console.log('revisig' + revising)
 
     return (
-        <Card style={{ width: '20rem' }} border="primary" className="overflow-auto" >
+        <Card
+            style={{ width: "20rem" }}
+            border="primary"
+            className="overflow-auto"
+        >
             <Card.Header className="bg-transparent border-0">
                 <ProgressBar variant="info" className="mt-3">
                     <ProgressBar now={newWords} max={all} key={1} />
-                    <ProgressBar variant="warning" now={repeating} max={all} key={2} />
-                    <ProgressBar variant="success" now={learnt} max={all} key={3} />
+                    <ProgressBar
+                        variant="warning"
+                        now={repeating}
+                        max={all}
+                        key={2}
+                    />
+                    <ProgressBar
+                        variant="success"
+                        now={learnt}
+                        max={all}
+                        key={3}
+                    />
                 </ProgressBar>
             </Card.Header>
             <Card.Body>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Button variant={newWords > 0 ? "primary" : "outline-dark"} onClick={newWords > 0 ? () => handleShowAppChange("new") : () => { }}>новые слова  </Button>
-                    <Button variant={revising > 0 ? "warning" : "outline-dark"} onClick={repeating > 0 ? () => handleShowAppChange("revise") : () => { }}>повторение</Button>
+                <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                    <Button
+                        variant={newWords > 0 ? "primary" : "outline-dark"}
+                        onClick={
+                            newWords > 0
+                                ? () => handleShowAppChange("new")
+                                : () => {}
+                        }
+                    >
+                        новые слова{" "}
+                    </Button>
+                    <Button
+                        variant={revising > 0 ? "warning" : "outline-dark"}
+                        onClick={
+                            repeating > 0
+                                ? () => handleShowAppChange("revise")
+                                : () => {}
+                        }
+                    >
+                        повторение
+                    </Button>
                 </div>
-                <Alert variant="light" className="mb-0 mt-3 pb-0" >
+                <Alert variant="light" className="mb-0 mt-3 pb-0">
                     <h1>{deck.name}</h1>
-                    {deck.words.map(word => <span key={nanoid()}>{word.body}<br/> </span>)}
+                    {deck.words.map((word) => (
+                        <span key={nanoid()}>
+                            {word.body}
+                            <br />{" "}
+                        </span>
+                    ))}
                 </Alert>
             </Card.Body>
         </Card>
