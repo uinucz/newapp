@@ -2,6 +2,7 @@ import axios from "axios"
 import React, { useState, useEffect } from "react"
 import CardPage from "./CardPage"
 import Deck from "./Deck"
+import { observer } from "mobx-react-lite"
 
 async function callAPI(id, wordGroup) {
     await axios.put(`http://localhost:8080/api/v1/word/${id}/${wordGroup}`)
@@ -11,12 +12,7 @@ function useForceUpdate() {
     return () => setValue((value) => value + 1) // update the state to force render
 }
 
-export default function LearnNewApp({
-    deck,
-    handleShowAppChange,
-    handleDecksChange,
-    handleSetShowApp,
-}) {
+function LearnNewApp({ deck, handleDecksChange }) {
     let words = deck.words.filter((x) => x.wordGroup === "newLearning")
     const forceUpdate = useForceUpdate()
 
@@ -52,24 +48,17 @@ export default function LearnNewApp({
         forceUpdate()
     }
 
-    console.log("LNA words length is ", words.length)
-    console.log(words)
     if (words.length !== 0)
         return (
             <CardPage
                 words={words}
-                handleShowAppChange={handleShowAppChange}
                 leftButtonFunc={memorized}
                 rightButtonFunc={showAgain}
             />
         )
     else {
-        return (
-            <Deck
-                deck={deck}
-                handleShowAppChange={handleShowAppChange}
-                handleSetShowApp={handleSetShowApp}
-            ></Deck>
-        )
+        return <Deck deck={deck}></Deck>
     }
 }
+
+export default observer(LearnNewApp)

@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useReducer } from "react"
 import { Container, Alert, Button, Card, ProgressBar } from "react-bootstrap"
 import { nanoid } from "nanoid"
+import { observer } from "mobx-react-lite"
+import { useStore } from "../store"
 
-export default function Deck({ handleSetShowApp, deck, handleShowAppChange }) {
-    const [_, forceUpdate] = useReducer((x) => x + 1, 0)
+function Deck({ deck }) {
+    const { appStore } = useStore()
 
-    useEffect(() => {
-        handleSetShowApp()
-    }, [])
+    // useEffect(() => {
+    //     handleSetShowApp()
+    // }, [])
 
     const occurrences = deck.words
         .map((x) => x.wordGroup)
@@ -31,6 +33,7 @@ export default function Deck({ handleSetShowApp, deck, handleShowAppChange }) {
     const all = learnt + newWords + repeating
 
     const [revising, setRevising] = useState(0)
+
     useEffect(() => {
         var x = 0
         for (var w of deck.words) {
@@ -70,7 +73,10 @@ export default function Deck({ handleSetShowApp, deck, handleShowAppChange }) {
                         variant={newWords > 0 ? "primary" : "outline-dark"}
                         onClick={
                             newWords > 0
-                                ? () => handleShowAppChange("new")
+                                ? () => {
+                                      appStore.setMode("new")
+                                      appStore.show()
+                                  }
                                 : () => {}
                         }
                     >
@@ -80,7 +86,10 @@ export default function Deck({ handleSetShowApp, deck, handleShowAppChange }) {
                         variant={revising > 0 ? "warning" : "outline-dark"}
                         onClick={
                             repeating > 0
-                                ? () => handleShowAppChange("revise")
+                                ? () => {
+                                      appStore.setMode("revise")
+                                      appStore.show()
+                                  }
                                 : () => {}
                         }
                     >
@@ -100,3 +109,5 @@ export default function Deck({ handleSetShowApp, deck, handleShowAppChange }) {
         </Card>
     )
 }
+
+export default observer(Deck)

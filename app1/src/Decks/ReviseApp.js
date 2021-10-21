@@ -2,6 +2,8 @@ import axios from "axios"
 import React, { useState, useEffect } from "react"
 import CardPage from "./CardPage"
 import Deck from "./Deck"
+import { observer } from "mobx-react-lite"
+import { store, StoreContext, useStore } from "../store"
 
 async function callAPI(id, wordGroup) {
     await axios.put(`http://localhost:8080/api/v1/word/${id}/${wordGroup}`)
@@ -11,14 +13,8 @@ function useForceUpdate() {
     return () => setValue((value) => value + 1) // update the state to force render
 }
 
-export default function ReviseApp({
-    deck,
-    handleShowAppChange,
-    handleDecksChange,
-    handleSetShowApp,
-}) {
+function ReviseApp({ deck, handleDecksChange }) {
     let words = deck.words.filter((word) => word.statusRepeating === true)
-
     const forceUpdate = useForceUpdate()
 
     function memorized(word) {
@@ -54,18 +50,13 @@ export default function ReviseApp({
         return (
             <CardPage
                 words={words}
-                handleShowAppChange={handleShowAppChange}
                 leftButtonFunc={memorized}
                 rightButtonFunc={showAgain}
             />
         )
     else {
-        return (
-            <Deck
-                deck={deck}
-                handleShowAppChange={handleShowAppChange}
-                handleSetShowApp={handleSetShowApp}
-            ></Deck>
-        )
+        return <Deck deck={deck}></Deck>
     }
 }
+
+export default observer(ReviseApp)

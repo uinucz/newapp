@@ -4,8 +4,9 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 import { nanoid } from "nanoid"
 import axios from "axios"
 import NewDeckForm from "./NewDeckForm"
+import { observer } from "mobx-react-lite"
 
-export default function Sidebar({ decks, addDeck, handleChosenDeck }) {
+function Sidebar({ decks, addDeck, handleChosenDeck }) {
     const [newDeck, setNewDeck] = useState(false)
 
     function handleNewDeck(name) {
@@ -50,3 +51,5 @@ export default function Sidebar({ decks, addDeck, handleChosenDeck }) {
         </Card>
     )
 }
+
+export default observer(Sidebar)

@@ -1,29 +1,17 @@
-import React, { useState, useEffect, useReducer } from "react"
-import { Container, Alert } from "react-bootstrap"
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    useParams,
-} from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import { Container } from "react-bootstrap"
+import { BrowserRouter as Router } from "react-router-dom"
 import Sidebar from "./Sidebar"
 import Deck from "./Deck"
 import AppPage from "./AppPage"
 import axios from "axios"
+import { observer } from "mobx-react-lite"
+import { useStore } from "../store"
 
-const pagePadding = {
-    padding: 40,
-}
-
-export default function Decks() {
+function Decks() {
     const [decks, setDecks] = useState([])
     const [chosenDeck, setChosenDeck] = useState(null)
-    const [showApp, setShowApp] = useState(false)
-    const [mode, setMode] = useState("new")
-    const [_, forceUpdate] = useReducer((x) => x + 1, 0)
-
-    console.log("showapp", showApp)
+    const { appStore } = useStore()
 
     useEffect(() => {
         function callAPI() {
@@ -40,19 +28,9 @@ export default function Decks() {
         callAPI()
     }, [])
 
-    function handleShowAppChange(x) {
-        setMode(() => x)
-        setShowApp((showApp) => !showApp)
-    }
-    function handleSetShowApp() {
-        setShowApp((x) => {
-            if (x) return false
-        })
-    }
     function handleChosenDeck(id) {
         setChosenDeck(id)
-        forceUpdate() //test line
-        setShowApp(false)
+        appStore.hide()
     }
     function handleDecksChange(newWord) {
         setDecks(
@@ -89,28 +67,23 @@ export default function Decks() {
 
                 {chosenDeck ? (
                     <>
-                        {showApp ? (
+                        {appStore.showState ? (
                             <AppPage
-                                mode={mode}
                                 handleDecksChange={handleDecksChange}
                                 deck={decks.find((x) => x.id === chosenDeck)}
-                                handleShowAppChange={handleShowAppChange}
-                                handleSetShowApp={handleSetShowApp}
                             />
                         ) : (
                             <Deck
-                                handleSetShowApp={handleSetShowApp}
                                 deck={decks.find((x) => x.id === chosenDeck)}
-                                handleShowAppChange={handleShowAppChange}
                             />
                         )}
                     </>
                 ) : (
-                    <>
-                        <h1>Выберите колоду</h1>
-                    </>
+                    <h1>Выберите колоду</h1>
                 )}
             </Router>
         </Container>
     )
 }
+
+export default observer(Decks)
