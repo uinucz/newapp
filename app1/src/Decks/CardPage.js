@@ -45,6 +45,16 @@ function CardPage({ words, leftButtonFunc, rightButtonFunc }) {
                         </Card.Title>
                         {currentWord.transcription}
                         <br />
+                        <h1 className="smalltext text-center">
+                            {currentWord.wordGroup == "first"
+                                ? "1-й повтор слова"
+                                : currentWord.wordGroup == "second"
+                                ? "2-й повтор слова"
+                                : currentWord.wordGroup == "third"
+                                ? "3-й повтор слова"
+                                : ""}
+                        </h1>
+
                         {showDefinition ? (
                             <>
                                 <h4>{currentWord.definition}</h4>

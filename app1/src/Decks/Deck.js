@@ -7,10 +7,6 @@ import { useStore } from "../store"
 function Deck({ deck }) {
     const { appStore } = useStore()
 
-    // useEffect(() => {
-    //     handleSetShowApp()
-    // }, [])
-
     const occurrences = deck.words
         .map((x) => x.wordGroup)
         .reduce(
